@@ -24,23 +24,24 @@ var Challenge = function(session, type, error, json) {
 //Selecting method and sending code is diffenent, depending on native or html style.
 //As soon as we got the code we can confirm it using Native version.
 //Oh, and code confirm is same now for email and phone checkpoints
-Challenge.resolve = function(checkpointError,defaultMethod,skipResetStep){
+Challenge.resolve = function(checkpointError,defaultMethod,prevChallengeUrl){
     var that = this;
     checkpointError = checkpointError instanceof Exceptions.CheckpointError ? checkpointError : checkpointError.json;
-    if(!this.apiUrl) this.apiUrl = 'https://i.instagram.com/api/v1'+checkpointError.json.challenge.api_path;
+    // maybe we should ignore prevChallengeUrl and always take it based on checkpointError.json.challenge.api_path
+    var apiUrl = prevChallengeUrl ? prevChallengeUrl : 'https://i.instagram.com/api/v1'+checkpointError.json.challenge.api_path;
     if(typeof defaultMethod==='undefined') defaultMethod = 'email';
     if(!(checkpointError instanceof Exceptions.CheckpointError)) throw new Error("`Challenge.resolve` method must get exception (type of `CheckpointError`) as a first argument");
     if(['email','phone'].indexOf(defaultMethod)==-1) throw new Error('Invalid default method');
     var session = checkpointError.session;
 
     return new Promise(function(res,rej){
-        if(skipResetStep) return res();
-        return res(that.reset(checkpointError))
+        if (prevChallengeUrl) return res();
+        return res(that.reset(checkpointError, apiUrl))
     })
     .then(function() {
         return new WebRequest(session)
             .setMethod('GET')
-            .setUrl(that.apiUrl)
+            .setUrl(apiUrl)
             .send({followRedirect: true})
         })
         .catch(errors.StatusCodeError, function(error){
@@ -63,13 +64,13 @@ Challenge.resolve = function(checkpointError,defaultMethod,skipResetStep){
             case 'select_verify_method':{
                 return new WebRequest(session)
                     .setMethod('POST')
-                    .setUrl(that.apiUrl)
+                    .setUrl(apiUrl)
                     .setData({
                         "choice": defaultMethod==='email' ? 1 : 0
                         })
                         .send({followRedirect: true})
                         .then(function(){
-                            return that.resolve(checkpointError,defaultMethod,true)
+                            return that.resolve(checkpointError,defaultMethod,apiUrl)
                         })
                 }
                 case 'verify_code':
@@ -149,7 +150,7 @@ Challenge.resolveHtml = function(checkpointError,defaultMethod){
         }
     }
 }
-Challenge.reset = function(checkpointError){
+Challenge.reset = function(checkpointError, apiUrl){
     var that = this;
 
     var session = checkpointError.session;
@@ -157,7 +158,7 @@ Challenge.reset = function(checkpointError){
     return new Request(session)
         .setMethod('POST')
         .setBodyType('form')
-        .setUrl(that.apiUrl.replace('/challenge/','/challenge/reset/'))
+        .setUrl(apiUrl.replace('/challenge/','/challenge/reset/'))
         .signPayload()
         .send({followRedirect: true})
     .catch(function(error){
