@@ -59,7 +59,7 @@ const ROUTES = {
     discoverAyml: 'discover/ayml/',
     inbox: 'direct_v2/inbox/<%= cursor ? ("?cursor=" + cursor) : "" %>',
     inboxPending: 'direct_v2/pending_inbox/<%= maxId ? ("?max_id=" + maxId) : "" %>',
-    threads: 'direct_v2/threads/?user_ids=<% JSON.stringify(threads) %>',
+    threads: 'direct_v2/threads/?user_ids=<%= JSON.stringify(threads) %>',
     threadsShow: 'direct_v2/threads/<%= threadId %>/<%= cursor ? ("?cursor=" + cursor) : "" %>',
     threadsSeen: 'direct_v2/threads/<%= threadId %>/items/<%= itemId %>/seen/',
     threadsApprove: 'direct_v2/threads/<%= threadId %>/approve/',
