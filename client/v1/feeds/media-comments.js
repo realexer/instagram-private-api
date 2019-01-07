@@ -38,7 +38,7 @@ MediaCommentsFeed.prototype.get = function () {
                 that.setCursor(data.next_max_id);
             }
             return _.map(data.comments, function (comment) {
-                comment.pk = comment.pk.c.join("");
+                comment.pk = comment.pk.toString();
                 comment.media_id = that.mediaId;
                 return new Comment(that.session, comment);
             });
