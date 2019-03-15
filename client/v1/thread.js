@@ -274,6 +274,43 @@ Thread.configurePhoto = function (session, users, upload_id) {
         return threadsWrapper(session, request);
     };
 
+Thread.uploadPhoto = function (session, users, filePath)
+{
+    var stream = Helpers.pathToStream(filePath);
+    if (!_.isArray(users)) users = [users];
+
+    var payload = {
+        recipient_users: JSON.stringify([users]),
+        action: "send_item",
+        client_context: Helpers.generateUUID()
+    };
+
+    var predictedUploadId = new Date().getTime();
+    var filename = ("direct_temp_photo_")+predictedUploadId+".jpg"
+
+    var request = new Request(session)
+    return request.setMethod('POST')
+        .setResource('threadsBrodcastUploadPhoto')
+        .generateUUID()
+        .setData(payload)
+        .transform(function(opts){
+            opts.formData.photo = {
+                value: stream,
+                options: {
+                    filename: filename,
+                    contentType: 'application/octet-stream',
+                    header: {
+                        'Content-Transfer-Encoding': 'binary'
+                    }
+                }
+            };
+            return opts;
+        })
+        .send();
+
+    return threadsWrapper(session, request);
+};
+
 Thread.configureMediaShare = function(session, users, mediaId, text) {  
     if(!_.isArray(users)) users = [users];
     var payload = {

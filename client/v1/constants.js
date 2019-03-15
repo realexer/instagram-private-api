@@ -70,6 +70,7 @@ const ROUTES = {
     threadsBrodcastProfile: 'direct_v2/threads/broadcast/profile/',
     threadsBrodcastHashtag: 'direct_v2/threads/broadcast/hashtag/',
     threadsBrodcastPhoto: 'direct_v2/threads/broadcast/configure_photo/',
+    threadsBrodcastUploadPhoto: 'direct_v2/threads/broadcast/upload_photo/',
     threadsApproveAll: 'direct_v2/threads/approve_all/',
     threadsRecentRecipients: 'direct_share/recent_recipients/',
     autocompleteUserList: 'friendships/autocomplete_user_list/?version=2&followinfo=True',
