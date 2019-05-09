@@ -196,9 +196,9 @@ Request.prototype.setUrl = function(url) {
 };
 
 
-Request.prototype.setResource = function(resource, data) {
+Request.prototype.setResource = function(resource, data, version) {
     this._resource = resource;
-    this.setUrl(routes.getUrl(resource, data));
+    this.setUrl(routes.getUrl(resource, data, version));
     return this;
 };
 

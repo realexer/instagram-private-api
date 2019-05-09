@@ -80,7 +80,9 @@ const ROUTES = {
     save: 'media/<%= id %>/save/',
     unsave: 'media/<%= id %>/unsave/',
     userStory: 'feed/reels_media/',
-    storyTray: 'feed/reels_tray/'
+    storyTray: 'feed/reels_tray/',
+    userStoryV2: 'feed/user/<%= userId %>/reel_media/',
+    markStoryAsSeen: 'media/seen/'
 };
 
 
@@ -113,6 +115,7 @@ module.exports = {
     WEBHOST: WEBHOST,
     TLD: TLD,
     API_ENDPOINT: HOST + 'api/v1/',
+    API_ENDPOINT_V2: HOST + 'api/v2/',
     EXPERIMENTS: EXPERIMENTS,
     PRIVATE_KEY: PRIVATE_KEY,
     instagramAgentTemplate: _.template('Instagram <%= version %> Android (<%= agent %>)')

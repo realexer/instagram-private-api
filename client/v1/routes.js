@@ -11,10 +11,31 @@ _.each(CONSTANTS.WEB_ROUTES, function (val, key) {
     WEB_URLs[key] = _.template(val);
 });
 
-exports.getUrl = function(key, data) {
+exports.getUrl = function(key, data, version) {
     if(!_.isFunction(URLs[key])) 
         throw new Error("Url with key `"+ key +"` is not available");
-    return CONSTANTS.API_ENDPOINT + URLs[key](data || {});   
+
+    if(!version) {
+        version = 1;
+    }
+
+    var api_endpoint = null;
+
+    switch(version) {
+        case 1:
+            api_endpoint = CONSTANTS.API_ENDPOINT;
+            break;
+
+        case 2:
+            api_endpoint = CONSTANTS.API_ENDPOINT_V2;
+            break;
+
+        default:
+            throw new Error("API version '"+version+"' is not supported." );
+
+    }
+
+    return api_endpoint + URLs[key](data || {});
 }
 
 exports.getWebUrl = function(key, data) {
