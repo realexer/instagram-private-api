@@ -382,3 +382,21 @@ Thread.recentRecipients = function(session) {
             }
         });
 };
+
+Thread.delete = function (session, threadId, itemId)
+{
+    return new Request(session)
+        .setMethod('POST')
+        .generateUUID()
+        .setResource('threadsDelete', {
+            threadId: threadId,
+            itemId: itemId
+        })
+        .setData({
+            client_context: Helpers.generateUUID()
+        })
+        .send()
+        .then(function(data) {
+            return data;
+        });
+};

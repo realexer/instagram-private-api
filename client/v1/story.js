@@ -89,7 +89,7 @@ Story.markAsSeen = function(session, realMediasList)
 
     return new Request(session)
         .setMethod('POST')
-        .setResource('markStoryAsSeen', null, 2)
+        .setResource('markMediaAsSeen', null, 2)
         .generateUUID()
         .setData(data)
         .signPayload()

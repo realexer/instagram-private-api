@@ -64,6 +64,7 @@ const ROUTES = {
     threadsSeen: 'direct_v2/threads/<%= threadId %>/items/<%= itemId %>/seen/',
     threadsApprove: 'direct_v2/threads/<%= threadId %>/approve/',
     threadsHide: 'direct_v2/threads/<%= threadId %>/hide/',
+    threadsDelete: 'direct_v2/threads/<%= threadId %>/items/<%= itemId %>/delete/',
     threadsBrodcastText: 'direct_v2/threads/broadcast/text/',
     threadsBrodcastLink: 'direct_v2/threads/broadcast/link/',
     threadsBrodcastShare: 'direct_v2/threads/broadcast/media_share/?media_type=photo',
@@ -82,7 +83,7 @@ const ROUTES = {
     userStory: 'feed/reels_media/',
     storyTray: 'feed/reels_tray/',
     userStoryV2: 'feed/user/<%= userId %>/reel_media/',
-    markStoryAsSeen: 'media/seen/'
+    markMediaAsSeen: 'media/seen/'
 };
 
 
